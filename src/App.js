@@ -18,17 +18,19 @@ function App() {
 		console.log(typeof(res));
 		console.log(res);
 		console.log(file.name);
+		console.log(res.split("base64,")[1]);
+		//console.log(file);
 	fetch(`https://speech.googleapis.com/v1/speech:recognize?key=${process.env.REACT_APP_API_KEY}`, {
 		method: "POST",
 				headers: {
 						'Content-type':'application/json',
 				},body: JSON.stringify({
 					"config": {
-							"encoding":"FLAC",
+							"encoding":"LINEAR16",
 							"languageCode": "en-US"
 					},
 					"audio": {
-							"content": res,
+							"content": file,
 					}
 				})
 	}).then((resp) => resp.json())
@@ -62,6 +64,9 @@ function App() {
 					console.log(e.target.files[0].name);
 					setFile(e.target.files[0]);
 				}}/>
+				<input type="file" onChange={(e) => {
+					setFile(e.target.files[0]);
+					}} />
 				<button type="button" onClick={() => {
 					sendReq();
 				}}>Convert</button>
